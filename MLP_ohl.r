@@ -81,29 +81,31 @@ k <- 10
 folds <- sample(rep(1:k, length=nlearn), nlearn, replace=FALSE)
 
 # Test different values of size, decay is fixed to 0.02
-size <- c(1, seq(5,50, by=5))
+size <- c(1, seq(5,70, by=5))
 
 results = vector(mode="list",length=length(size))
 for (i in seq(1,length(size))) {
   results[[i]] <- train.nnet.kCV(data[learn,], size[i], 0.02, folds, 500, k)
   print(paste("Accuracity for size equals", as.character(size[i]), "is", as.character(results[[i]]$accur)))
-  save.image("~/Documents/FIB/APA/online-news-popularity/MLP_size.RData")
+  save.image("MLP_size.RData")
 }
 
-# Test different values of decay, size parameter fixed to 100
+# Test different values of decay, size parameter fixed to 50
 decays <- 10^seq(-3,0,by=0.2)
 
 results = vector(mode="list",length=length(decays))
 for (i in seq(1,length(decays))) {
-  results[[i]] <- train.svm.kCV(data[learn,], 100, decays[i], folds, 200, k)
-  print(paste("Accuracity for decay equals", as.character(decay[i]), "is", as.character(results[[i]]$accur)))
-  save.image("~/Documents/FIB/APA/online-news-popularity/MLP_dacay.RData")
+  results[[i]] <- train.nnet.kCV(data[learn,], 50, decays[i], folds, 500, k)
+  print(paste("Accuracity for decay equals", as.character(decays[i]), "is", as.character(results[[i]]$accur)))
+  save.image("MLP_decay_50.RData")
 }
 
-grid <- expand.grid(.C=C,.G=G)
+# Test different values of decay, size parameter fixed to 100
+decays <- 10^seq(-3.8,-2,by=0.2)
 
-# Test decay and size parameters.
-C <- 2^seq(-5,9)
-G <- 2^seq(-8,-1)
-
-grid <- expand.grid(.C=C,.G=G)
+results = vector(mode="list",length=length(decays))
+for (i in seq(1,length(decays))) {
+  results[[i]] <- train.nnet.kCV(data[learn,], 100, decays[i], folds, 500, k)
+  print(paste("Accuracity for decay equals", as.character(decays[i]), "is", as.character(results[[i]]$accur)))
+  save.image("MLP_decay_100.RData")
+}

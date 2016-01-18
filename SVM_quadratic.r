@@ -93,7 +93,7 @@ k <- 5
 folds <- sample(rep(1:k, length=nlearn), nlearn, replace=FALSE)
 
 # Test different values of C, G fixed to 0.01694915
-C <- 2^seq(-5,9)
+C <- 2^seq(-5,8)
 results = vector(mode="list",length=length(C))
 for (i in seq(1,length(C))) {
   results[[i]] <- train.svm.kCV(data[learn,], C[i], 0.01694915, folds, k)
@@ -110,13 +110,29 @@ for (i in seq(1,length(G))) {
   save.image("~/Documents/FIB/APA/online-news-popularity/SVM_G.RData")
 }
 
-# Test different values of G and C.
-C <- 2^seq(2,5)
-G <- 2^seq(-6,-3)
-grid <- expand.grid(C=C,G=G)
-results = vector(mode="list",length=nrow(grid))
-for (i in seq(1,nrow(grid))) {
-  results[[i]] <- train.svm.kCV(data[learn,], grid[i,'C'], grid[i,'G'], folds, k)
-  print(paste("Accuracity for C equals", as.character(grid[i,'C']), ", G equals", as.character(grid[i,'G']), "is", as.character(results[[i]]$accur)))
-  save.image("~/Documents/FIB/APA/online-news-popularity/SVM_CG.RData")
+# G equals 0.015625 and varying C.
+C <- 2^seq(2,6)
+results = vector(mode="list",length=length(C))
+for (i in seq(1,length(C))) {
+  results[[i]] <- train.svm.kCV(data[learn,], C[i], 0.015625, folds, k)
+  print(paste("Accuracity for C equals", as.character(C[i]), ", G equals", as.character(0.015625), "is", as.character(results[[i]]$accur)))
+  save.image("SVM_C_0015625.RData")
+}
+
+# G equals 0.03125 and varying C.
+C <- 2^seq(-1,5)
+results = vector(mode="list",length=length(C))
+for (i in seq(1,length(C))) {
+  results[[i]] <- train.svm.kCV(data[learn,], C[i], 0.03125, folds, k)
+  print(paste("Accuracity for C equals", as.character(C[i]), ", G equals", as.character(0.03125), "is", as.character(results[[i]]$accur)))
+  save.image("SVM_C_003125.RData")
+}
+
+# G equals 0.0625 and varying C.
+C <- 2^seq(-3,5)
+results = vector(mode="list",length=length(C))
+for (i in seq(1,length(C))) {
+  results[[i]] <- train.svm.kCV(data[learn,], C[i], 0.0625, folds, k)
+  print(paste("Accuracity for C equals", as.character(C[i]), ", G equals", as.character(0.0625), "is", as.character(results[[i]]$accur)))
+  save.image("SVM_C_00625.RData")
 }
