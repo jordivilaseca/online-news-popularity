@@ -94,7 +94,7 @@ for (i in seq(1,length(ntrees))) {
 
 # See which values of ntrees are more promising
 for (i in seq(1,length(results))) {
-  print(as.character(ntrees[i])) 
+  print(paste("Ntree", as.character(ntrees[i]), "accuracy", as.character(results[[i]]$accur)))
   print(results[[i]]$metrics)
 }
 
@@ -109,6 +109,16 @@ for (i in seq(1,length(ntrees2))) {
 
 # See which values of ntrees2 are more promising
 for (i in seq(1,length(ntrees2))) {
-  print(as.character(ntrees2[i])) 
+  print(paste("Ntree", as.character(ntrees2[i]), "accuracy", as.character(results2[[i]]$accur)))
   print(results2[[i]]$metrics)
 }
+
+#####################################################################################
+# We know that this is the best model. We are going to study the importance of its variables
+# and its use
+
+model.rf <- randomForest(shares ~ ., data=data[learn,], ntree=250, proximity=FALSE)
+
+# The importance of variables
+importance(model.rf)
+varImpPlot(model.rf, main="Importància de les variables")
